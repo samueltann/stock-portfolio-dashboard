@@ -1,11 +1,23 @@
 // import { useState } from "react";
+import Navbar from "./components/Navbar";
+import Index from "./Index";
 
 function App() {
   // const [count, setCount] = useState(0);
+  //     id: string;
+  //   symbol: string;
+  //   name: string;
+  //   price: number;
+  //   change: number;
+  //   changePercent: number;
+  //   shares: number;
+  // }
 
   return (
     <>
-      <h1 className="text-3xl text-blue-700">hello</h1>
+      <Navbar />
+      <Index />
+      {/* <StockCard stock={s} onRemove={() => null} /> */}
     </>
   );
 }
