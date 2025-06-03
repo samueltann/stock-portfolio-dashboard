@@ -1,5 +1,8 @@
 import { useState } from "react";
-import StockCard from "./components/StockCard";
+import StockList from "./components/StockList";
+import AddStockForm from "./components/AddStockForm";
+import PortfolioSummary from "./components/PortfolioSummary";
+import Navbar from "./components/Navbar";
 
 export interface Stock {
   id: string;
@@ -61,13 +64,25 @@ function Index() {
   }
   return (
     <>
-      {stocks.map((stock) => (
-        <StockCard
-          key={stock.id}
-          stock={stock}
-          onRemove={() => removeStock(stock.id)}
-        />
-      ))}
+      <div className="min-h-screen bg-slate-300 ">
+        {/* Header */}
+        <Navbar />
+        {/* Add Stock Form */}
+        {/* <div className="mb-24"> */}
+        <AddStockForm onAddStock={addStock} />
+        {/* </div> */}
+
+        {/* Portfolio Summary */}
+        <div className="mb-8">
+          <PortfolioSummary stocks={stocks} />
+        </div>
+        <div className="container mx-auto px-4 py-8">
+          <h2 className="text-2xl font-semibold mb-5">Your Watchlist</h2>
+          <div>
+            <StockList stocks={stocks} removeStock={removeStock} />
+          </div>
+        </div>
+      </div>
     </>
   );
 }

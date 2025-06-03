@@ -1,6 +1,6 @@
 // import { useState } from "react";
-import Navbar from "./components/Navbar";
 import Index from "./Index";
+import Navbar from "./components/Navbar";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Index />
       {/* <StockCard stock={s} onRemove={() => null} /> */}
     </>

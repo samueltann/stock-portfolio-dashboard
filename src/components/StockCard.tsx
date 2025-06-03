@@ -10,8 +10,7 @@ function StockCard({ stock, onRemove }: StockCardProps) {
   const totalValue = stock.price * stock.shares;
 
   return (
-    // <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-slate-600 transition-all duration-200 hover:transform hover:scale-105 hover:shadow-xl">
-    <div className="w-full max-w-sm mx-auto bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-slate-600 transition-all duration-200 hover:transform hover:scale-105 hover:shadow-xl">
+    <li className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-slate-600 transition-all duration-200 hover:transform hover:scale-105 hover:shadow-xl">
       {/* Stock Symbol and Name */}
       <div className="flex justify-between items-start mb-4">
         <div>
@@ -64,7 +63,7 @@ function StockCard({ stock, onRemove }: StockCardProps) {
           </span>
         </div>
       </div>
-    </div>
+    </li>
   );
 }
 
