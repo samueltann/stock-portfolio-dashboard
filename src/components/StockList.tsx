@@ -1,6 +1,5 @@
 import StockCard from "./StockCard";
 import type { Stock } from "../Index";
-import { HiH1 } from "react-icons/hi2";
 
 interface StockListProps {
   stocks: Stock[];

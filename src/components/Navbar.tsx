@@ -1,4 +1,5 @@
 import { MdShowChart } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -21,27 +22,27 @@ const Navbar = () => {
                     font-bold 
                    `}
         >
-          <a
-            href="#home"
+          <Link
+            to="/"
             className="block py-2 px-4 hover:text-gray-200 text-xl
                                    md:inline-block"
           >
             Home
-          </a>
-          <a
-            href="#about"
+          </Link>
+          <Link
+            to="/watchlist"
             className="block py-2 px-4 hover:text-gray-200 text-xl
                                    md:inline-block"
           >
             Watchlist
-          </a>
-          <a
-            href="#contact"
+          </Link>
+          <Link
+            to="/askAI"
             className="block py-2 px-4 hover:text-gray-200 text-xl
                                    md:inline-block"
           >
-            AI Overview
-          </a>
+            Ask AI
+          </Link>
         </div>
       </div>
     </nav>
