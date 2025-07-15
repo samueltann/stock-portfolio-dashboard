@@ -6,11 +6,12 @@ import { StockProvider } from "./context/StockContext"; // import this
 import "./index.css";
 import Chatbot from "./routes/Chatbot.tsx";
 import Index from "./Index.tsx";
+import App from "./App.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Index />,
+    element: <App />,
     children: [
       { index: true, element: <Index /> },
       { path: "askAI", element: <Chatbot /> },

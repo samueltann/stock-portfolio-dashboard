@@ -1,24 +1,13 @@
-// import { useState } from "react";
-import Index from "./Index";
-// import Navbar from "./components/Navbar";
-// import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { Outlet } from "react-router";
 
 function App() {
-  // const [count, setCount] = useState(0);
-  //     id: string;
-  //   symbol: string;
-  //   name: string;
-  //   price: number;
-  //   change: number;
-  //   changePercent: number;
-  //   shares: number;
-  // }
-
   return (
     <>
-      {/* <Navbar /> */}
-      <Index />
-      {/* <StockCard stock={s} onRemove={() => null} /> */}
+      <div className="min-h-screen bg-slate-300 ">
+        <Navbar />
+        <Outlet />
+      </div>
     </>
   );
 }
