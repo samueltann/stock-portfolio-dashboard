@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    // <div className="bg-slate-400  mx-auto px-3 py-8 border-b-black border-b-4">
     <nav
       className={`p-4 bg bg-slate-400  mx-auto px-3 py-8 border-b-black border-b-4`}
     >
@@ -30,13 +29,6 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            to="/watchlist"
-            className="block py-2 px-4 hover:text-gray-200 text-xl
-                                   md:inline-block"
-          >
-            Watchlist
-          </Link>
-          <Link
             to="/askAI"
             className="block py-2 px-4 hover:text-gray-200 text-xl
                                    md:inline-block"
@@ -46,7 +38,6 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-    // </div>
   );
 };
 

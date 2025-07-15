@@ -1,11 +1,9 @@
 import { useState } from "react";
-import type { Stock } from "../Index";
+import { useStock } from "../context/StockContext";
+import { type Stock } from "../Index";
 
-interface AddStockFormProps {
-  onAddStock: (stock: Omit<Stock, "id">) => void;
-}
-
-const AddStockForm = ({ onAddStock }: AddStockFormProps) => {
+const AddStockForm = () => {
+  const { addStock } = useStock();
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     symbol: "",
@@ -37,7 +35,7 @@ const AddStockForm = ({ onAddStock }: AddStockFormProps) => {
       shares: parseInt(formData.shares),
     };
 
-    onAddStock(newStock);
+    addStock(newStock);
     setFormData({
       symbol: "",
       name: "",

@@ -1,10 +1,7 @@
-import type { Stock } from "../Index";
+import { useStock } from "../context/StockContext";
 
-interface PortfolioSummaryProps {
-  stocks: Stock[];
-}
-
-function PortfolioSummary({ stocks }: PortfolioSummaryProps) {
+function PortfolioSummary() {
+  const { stocks } = useStock();
   const totalValue = stocks.reduce(
     (sum, stock) => sum + stock.price * stock.shares,
     0

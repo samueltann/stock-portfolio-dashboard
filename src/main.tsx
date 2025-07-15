@@ -1,33 +1,27 @@
+// main.tsx
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { StockProvider } from "./context/StockContext"; // import this
 import "./index.css";
-import App from "./App.tsx";
-import Chatbot from "./routes/chatbot.tsx";
+import Chatbot from "./routes/Chatbot.tsx";
+import Index from "./Index.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Index />,
     children: [
-      {
-        index: true,
-        element: <App />,
-      },
-      {
-        path: "watchlist",
-        element: <App />,
-      },
-      {
-        path: "askAI",
-        element: <Chatbot />,
-      },
+      { index: true, element: <Index /> },
+      { path: "askAI", element: <Chatbot /> },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <StockProvider>
+      <RouterProvider router={router} />
+    </StockProvider>
   </StrictMode>
 );
