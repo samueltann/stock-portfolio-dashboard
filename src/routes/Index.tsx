@@ -1,6 +1,6 @@
-import AddStockForm from "./components/AddStockForm";
-import PortfolioSummary from "./components/PortfolioSummary";
-import Watchlist from "./components/Watchlist";
+import AddStockForm from "../components/AddStockForm";
+import PortfolioSummary from "../components/PortfolioSummary";
+import Watchlist from "../components/Watchlist";
 
 export interface Stock {
   id: string;

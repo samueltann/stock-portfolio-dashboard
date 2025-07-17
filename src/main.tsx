@@ -5,8 +5,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { StockProvider } from "./context/StockContext"; // import this
 import "./index.css";
 import Chatbot from "./routes/Chatbot.tsx";
-import Index from "./Index.tsx";
+import Index from "./routes/Index.tsx";
 import App from "./App.tsx";
+import StockSearch from "./routes/StockSearch.tsx";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, element: <Index /> },
+      { path: "search", element: <StockSearch /> },
       { path: "askAI", element: <Chatbot /> },
     ],
   },

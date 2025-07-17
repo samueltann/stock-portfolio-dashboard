@@ -8,10 +8,10 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex justify-between items-center">
         {/* Brand Name */}
-        <a href="/" className="text-4xl font-semibold">
+        <Link to="/" className="text-4xl font-semibold">
           Stock Porfolio
           <MdShowChart className="float-left m-1" />
-        </a>
+        </Link>
 
         {/* Navigation Links */}
         <div
@@ -27,6 +27,13 @@ const Navbar = () => {
                                    md:inline-block"
           >
             Home
+          </Link>
+          <Link
+            to="/search"
+            className="block py-2 px-4 hover:text-gray-200 text-xl
+                                   md:inline-block"
+          >
+            Search
           </Link>
           <Link
             to="/askAI"

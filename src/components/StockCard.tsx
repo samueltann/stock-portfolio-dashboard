@@ -1,4 +1,4 @@
-import type { Stock } from "../Index";
+import type { Stock } from "../routes/Index";
 
 interface StockCardProps {
   stock: Stock;

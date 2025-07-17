@@ -1,5 +1,5 @@
 import StockCard from "./StockCard";
-import type { Stock } from "../Index";
+import type { Stock } from "../routes/Index";
 
 interface StockListProps {
   stocks: Stock[];

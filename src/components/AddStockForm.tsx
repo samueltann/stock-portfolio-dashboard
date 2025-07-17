@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useStock } from "../context/StockContext";
-import { type Stock } from "../Index";
+import { type Stock } from "../routes/Index";
 
 const AddStockForm = () => {
   const { addStock } = useStock();
