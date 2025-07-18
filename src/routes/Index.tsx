@@ -1,6 +1,7 @@
 import AddStockForm from "../components/AddStockForm";
 import PortfolioSummary from "../components/PortfolioSummary";
 import Watchlist from "../components/Watchlist";
+import PortfolioItem from "../components/PortfolioItem";
 
 export interface Stock {
   id: string;
@@ -18,6 +19,9 @@ function Index() {
       <AddStockForm />
       <PortfolioSummary />
       <Watchlist />
+      <PortfolioItem
+        stock={{ symbol: "AAPL", name: "Apple Inc.", shares: 1 }}
+      />
     </>
   );
 }
