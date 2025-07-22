@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useStock } from "../context/StockContext";
-import { type Stock } from "../routes/Index";
+import { useStock, type Stock } from "../context/StockContext";
 
 const AddStockForm = () => {
   const { addStock } = useStock();
@@ -8,40 +7,25 @@ const AddStockForm = () => {
   const [formData, setFormData] = useState({
     symbol: "",
     name: "",
-    price: "",
-    change: "",
-    changePercent: "",
     shares: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !formData.symbol ||
-      !formData.name ||
-      !formData.price ||
-      !formData.shares
-    ) {
-      return;
-    }
+    if (!formData.symbol || !formData.name || !formData.shares) return;
 
     const newStock: Omit<Stock, "id"> = {
       symbol: formData.symbol.toUpperCase(),
       name: formData.name,
-      price: parseFloat(formData.price),
-      change: parseFloat(formData.change) || 0,
-      changePercent: parseFloat(formData.changePercent) || 0,
       shares: parseInt(formData.shares),
     };
 
     addStock(newStock);
+
     setFormData({
       symbol: "",
       name: "",
-      price: "",
-      change: "",
-      changePercent: "",
       shares: "",
     });
     setIsOpen(false);
@@ -114,23 +98,6 @@ const AddStockForm = () => {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              Current Price *
-            </label>
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleInputChange}
-              placeholder="0.00"
-              step="0.01"
-              min="0"
-              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
               Shares Owned *
             </label>
             <input
@@ -142,36 +109,6 @@ const AddStockForm = () => {
               min="1"
               className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors"
               required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Daily Change ($)
-            </label>
-            <input
-              type="number"
-              name="change"
-              value={formData.change}
-              onChange={handleInputChange}
-              placeholder="0.00"
-              step="0.01"
-              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Daily Change (%)
-            </label>
-            <input
-              type="number"
-              name="changePercent"
-              value={formData.changePercent}
-              onChange={handleInputChange}
-              placeholder="0.00"
-              step="0.01"
-              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors"
             />
           </div>
         </div>

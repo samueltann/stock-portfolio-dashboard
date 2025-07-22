@@ -1,12 +1,8 @@
 import StockCard from "./StockCard";
-import type { Stock } from "../routes/Index";
+import { useStock } from "../context/StockContext";
 
-interface StockListProps {
-  stocks: Stock[];
-  removeStock: (id: string) => void;
-}
-
-function StockList({ stocks, removeStock }: StockListProps) {
+function StockList() {
+  const { stocks, stockData } = useStock();
   return (
     <>
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -15,7 +11,7 @@ function StockList({ stocks, removeStock }: StockListProps) {
             <StockCard
               key={stock.id}
               stock={stock}
-              onRemove={() => removeStock(stock.id)}
+              data={stockData[stock.symbol]}
             />
           ))}
 

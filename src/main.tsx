@@ -2,7 +2,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { StockProvider } from "./context/StockContext"; // import this
+// import { StockProvider } from "./context/StockContext"; // import this
+import { StockProvider } from "./context/StockContext";
 import "./index.css";
 import Chatbot from "./routes/Chatbot.tsx";
 import Index from "./routes/Index.tsx";

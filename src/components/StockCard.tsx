@@ -1,13 +1,16 @@
-import type { Stock } from "../routes/Index";
+import { useStock, type Stock } from "../context/StockContext";
+import { type LiveStockData } from "../hooks/useLiveStockData";
 
 interface StockCardProps {
   stock: Stock;
-  onRemove: () => void;
+  data: LiveStockData;
 }
 
-function StockCard({ stock, onRemove }: StockCardProps) {
-  const isPositive = stock.change >= 0;
-  const totalValue = stock.price * stock.shares;
+function StockCard({ data, stock }: StockCardProps) {
+  const { removeStock } = useStock();
+
+  const isPositive = data?.change >= 0;
+  const totalValue = data?.price ? data.price * stock.shares : 0;
 
   return (
     <li className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-slate-600 transition-all duration-200 hover:transform hover:scale-105 hover:shadow-xl">
@@ -18,7 +21,7 @@ function StockCard({ stock, onRemove }: StockCardProps) {
           <p className="text-slate-400 text-sm truncate">{stock.name}</p>
         </div>
         <button
-          onClick={onRemove}
+          onClick={() => removeStock(stock.id)}
           className="text-slate-500 hover:text-red-400 transition-colors"
           title="Remove from portfolio"
         >
@@ -28,27 +31,37 @@ function StockCard({ stock, onRemove }: StockCardProps) {
 
       {/* Price */}
       <div className="mb-4">
-        <p className="text-2xl font-semibold text-white">
-          ${stock.price.toFixed(2)}
-        </p>
+        {data?.loading ? (
+          <p className="text-slate-400 text-sm">Loading price...</p>
+        ) : data?.error ? (
+          <p className="text-red-400 text-sm">Error: {data.error}</p>
+        ) : data?.price ? (
+          <p className="text-2xl font-semibold text-white">
+            ${data.price.toFixed(2)}
+          </p>
+        ) : (
+          <p className="text-slate-400 text-sm">Loading price...</p>
+        )}
       </div>
 
       {/* Change */}
-      <div className="mb-4">
-        <div
-          className={`flex items-center space-x-2 ${
-            isPositive ? "text-emerald-400" : "text-red-400"
-          }`}
-        >
-          <span className="text-lg font-medium">
-            {isPositive ? "+" : ""}${stock.change.toFixed(2)}
-          </span>
-          <span className="text-sm">
-            ({isPositive ? "+" : ""}
-            {stock.changePercent.toFixed(2)}%)
-          </span>
+      {!data?.loading && !data?.error && (
+        <div className="mb-4">
+          <div
+            className={`flex items-center space-x-2 ${
+              isPositive ? "text-emerald-400" : "text-red-400"
+            }`}
+          >
+            <span className="text-lg font-medium">
+              {isPositive ? "+" : ""}${data?.change.toFixed(2)}
+            </span>
+            <span className="text-sm">
+              ({isPositive ? "+" : ""}
+              {data?.changePercent.toFixed(2)}%)
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Holdings */}
       <div className="border-t border-slate-700 pt-4">

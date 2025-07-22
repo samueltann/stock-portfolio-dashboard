@@ -1,26 +1,3 @@
-// import axios from 'axios';
-
-// const options = {
-//   method: 'GET',
-//   url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete',
-//   params: {
-//     region: 'US',
-//     q: 'tesla'
-//   },
-//   headers: {
-//     'x-rapidapi-key': '26c88939c2msh3140a222d22639dp1a6648jsn50d5df65c752',
-//     'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com'
-//   }
-// };
-
-// try {
-// 	const response = await axios.request(options);
-// 	console.log(response.data);
-// } catch (error) {
-// 	console.error(error);
-// }
-
-// src/utils/searchStockSymbols.ts
 import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_RAPIDAPI_KEY;

@@ -1,13 +1,29 @@
 import { useStock } from "../context/StockContext";
 
 function PortfolioSummary() {
-  const { stocks } = useStock();
+  const { stocks, stockData } = useStock();
+  const isLoading =
+    stocks.length === 0 || stocks.some((stock) => !stockData[stock.symbol]);
+
+  if (isLoading) {
+    return (
+      <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 max-w-3/4 mx-auto">
+        <h2 className="text-2xl font-semibold mb-6 text-slate-200">
+          Portfolio Summary
+        </h2>
+        <div className="text-center text-slate-400 py-10">
+          Loading portfolio data...
+        </div>
+      </div>
+    );
+  }
+
   const totalValue = stocks.reduce(
-    (sum, stock) => sum + stock.price * stock.shares,
+    (sum, stock) => sum + stockData[stock.symbol].price * stock.shares,
     0
   );
   const totalDayChange = stocks.reduce(
-    (sum, stock) => sum + stock.change * stock.shares,
+    (sum, stock) => sum + stockData[stock.symbol].change * stock.shares,
     0
   );
   const totalDayChangePercent =
