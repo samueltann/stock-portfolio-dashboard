@@ -60,7 +60,7 @@ export function useLiveStockData(symbols: string[]): { [symbol: string]: LiveSto
     fetchStock();
     const interval = setInterval(fetchStock, 300000);
     return () => clearInterval(interval);
-  }, []);
+  }, [symbols]);
 
   return data;
 }
