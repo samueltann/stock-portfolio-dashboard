@@ -1,5 +1,11 @@
 // StockContext.tsx
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   useLiveStockData,
   type LiveStockData,
@@ -41,7 +47,8 @@ export function StockProvider({ children }: { children: ReactNode }) {
       prev.map((s) => (s.id === id ? { ...s, ...updatedStock } : s))
     );
   };
-  const symbols = stocks.map((stock) => stock.symbol);
+  // const symbols = stocks.map((stock) => stock.symbol);
+  const symbols = useMemo(() => stocks.map((s) => s.symbol), [stocks]);
   const stockData = useLiveStockData(symbols);
 
   return (

@@ -13,6 +13,7 @@ export function useLiveStockData(symbols: string[]): { [symbol: string]: LiveSto
   const [data, setData] = useState<{ [symbol: string]: LiveStockData }>({});
 
   useEffect(() => {
+    if (symbols.length === 0) return;
     async function fetchStock() {
       try {
         const response = await axios.request({
