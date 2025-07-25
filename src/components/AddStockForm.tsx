@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useStock, type Stock } from "../context/StockContext";
+import { useStock } from "../context/StockContext";
 
 const AddStockForm = () => {
   const { addStock } = useStock();
@@ -10,24 +10,17 @@ const AddStockForm = () => {
     shares: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!formData.symbol || !formData.name || !formData.shares) return;
 
-    const newStock: Omit<Stock, "id"> = {
+    await addStock({
       symbol: formData.symbol.toUpperCase(),
       name: formData.name,
       shares: parseInt(formData.shares),
-    };
-
-    addStock(newStock);
-
-    setFormData({
-      symbol: "",
-      name: "",
-      shares: "",
     });
+
+    setFormData({ symbol: "", name: "", shares: "" });
     setIsOpen(false);
   };
 
@@ -38,98 +31,88 @@ const AddStockForm = () => {
     });
   };
 
-  if (!isOpen) {
-    return (
+  return (
+    <>
       <div className="mb-24">
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2 float-right m-4"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 float-right m-4"
         >
-          <span>+</span>
-          <span>Add Stock to Portfolio</span>
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 m-8">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-semibold text-white">Add New Stock</h3>
-        <button
-          onClick={() => setIsOpen(false)}
-          className="text-slate-400 hover:text-white transition-colors"
-        >
-          ×
+          + Add Stock to Portfolio
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Stock Symbol *
-            </label>
-            <input
-              type="text"
-              name="symbol"
-              value={formData.symbol}
-              onChange={handleInputChange}
-              placeholder="e.g., AAPL"
-              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Company Name *
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              placeholder="e.g., Apple Inc."
-              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Shares Owned *
-            </label>
-            <input
-              type="number"
-              name="shares"
-              value={formData.shares}
-              onChange={handleInputChange}
-              placeholder="0"
-              min="1"
-              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors"
-              required
-            />
-          </div>
-        </div>
-
-        <div className="flex space-x-4 pt-4">
-          <button
-            type="submit"
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
-          >
-            Add Stock
-          </button>
-          <button
-            type="button"
+      {isOpen && (
+        <>
+          {/* Blur Overlay */}
+          <div
+            className="fixed inset-0 backdrop-blur-sm z-40"
             onClick={() => setIsOpen(false)}
-            className="bg-slate-600 hover:bg-slate-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+          ></div>
+
+          {/* Floating Form Card */}
+          <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-slate-800 rounded-xl p-6 border border-slate-700 w-full max-w-md z-50 shadow-xl">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-3 right-3 text-slate-400 hover:text-white text-xl"
+            >
+              ×
+            </button>
+
+            <h3 className="text-xl font-semibold text-white mb-6">
+              Add New Stock
+            </h3>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="text"
+                name="symbol"
+                value={formData.symbol}
+                onChange={handleInputChange}
+                placeholder="Stock Symbol (e.g., AAPL)"
+                className="w-full bg-slate-700 text-white p-3 rounded-lg"
+                required
+              />
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Company Name"
+                className="w-full bg-slate-700 text-white p-3 rounded-lg"
+                required
+              />
+              <input
+                type="number"
+                name="shares"
+                value={formData.shares}
+                onChange={handleInputChange}
+                placeholder="Shares"
+                className="w-full bg-slate-700 text-white p-3 rounded-lg"
+                min="1"
+                required
+              />
+
+              <div className="flex space-x-4 pt-4">
+                <button
+                  type="submit"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium"
+                >
+                  Add Stock
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="bg-slate-600 hover:bg-slate-700 text-white px-6 py-2 rounded-lg font-medium"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </>
+      )}
+    </>
   );
 };
 

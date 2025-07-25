@@ -1,8 +1,8 @@
-// StockContext.tsx
 import {
   createContext,
   useContext,
   useMemo,
+  useEffect,
   useState,
   type ReactNode,
 } from "react";
@@ -10,6 +10,16 @@ import {
   useLiveStockData,
   type LiveStockData,
 } from "../hooks/useLiveStockData";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+  deleteDoc,
+  updateDoc,
+  getFirestore,
+} from "firebase/firestore";
+import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
 
 export interface Stock {
   id: string;
@@ -29,25 +39,68 @@ interface StockContextType {
 const StockContext = createContext<StockContextType | undefined>(undefined);
 
 export function StockProvider({ children }: { children: ReactNode }) {
-  const [stocks, setStocks] = useState<Stock[]>([
-    // { id: "1", symbol: "AAPL", name: "Apple Inc.", shares: 10 },
-    // { id: "2", symbol: "GOOGL", name: "Alphabet Inc.", shares: 5 },
-  ]);
+  const auth = getAuth();
+  const db = getFirestore();
 
-  const addStock = (stock: Omit<Stock, "id">) => {
-    setStocks((prev) => [...prev, { ...stock, id: Date.now().toString() }]);
+  const [user, setUser] = useState<User | null>(null);
+  const [stocks, setStocks] = useState<Stock[]>([]);
+
+  // Listen to Auth State
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
+    return () => unsubscribe();
+  }, [auth]);
+
+  // Fetch stocks from Firestore when user changes
+  useEffect(() => {
+    if (!user) {
+      setStocks([]);
+      return;
+    }
+
+    const portfolioRef = collection(db, "users", user.uid, "portfolio");
+
+    const unsubscribe = onSnapshot(portfolioRef, (snapshot) => {
+      const stockList: Stock[] = snapshot.docs.map((doc) => {
+        const data = doc.data().data;
+        return {
+          id: doc.id,
+          symbol: data.symbol,
+          name: data.name,
+          shares: data.shares,
+        };
+      });
+      setStocks(stockList);
+    });
+
+    return () => unsubscribe();
+  }, [user, db]);
+
+  // Firestore operations
+  const addStock = async (stock: Omit<Stock, "id">) => {
+    if (!user) return;
+    const stockRef = doc(db, "users", user.uid, "portfolio", stock.symbol);
+    await setDoc(stockRef, {
+      symbol: stock.symbol,
+      name: stock.name,
+      shares: stock.shares,
+    });
   };
 
-  const removeStock = (id: string) => {
-    setStocks((prev) => prev.filter((s) => s.id !== id));
+  const removeStock = async (id: string) => {
+    if (!user) return;
+    const stockRef = doc(db, "users", user.uid, "portfolio", id);
+    await deleteDoc(stockRef);
   };
 
-  const updateStock = (id: string, updatedStock: Partial<Stock>) => {
-    setStocks((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, ...updatedStock } : s))
-    );
+  const updateStock = async (id: string, updatedStock: Partial<Stock>) => {
+    if (!user) return;
+    const stockRef = doc(db, "users", user.uid, "portfolio", id);
+    await updateDoc(stockRef, updatedStock);
   };
-  // const symbols = stocks.map((stock) => stock.symbol);
+
   const symbols = useMemo(() => stocks.map((s) => s.symbol), [stocks]);
   const stockData = useLiveStockData(symbols);
 
