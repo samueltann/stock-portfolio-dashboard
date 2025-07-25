@@ -1,5 +1,6 @@
 import { MdShowChart } from "react-icons/md";
 import { Link } from "react-router-dom";
+// import { logout } from "../utils/auth";
 
 const Navbar = () => {
   return (

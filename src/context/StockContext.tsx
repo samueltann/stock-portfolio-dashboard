@@ -30,8 +30,8 @@ const StockContext = createContext<StockContextType | undefined>(undefined);
 
 export function StockProvider({ children }: { children: ReactNode }) {
   const [stocks, setStocks] = useState<Stock[]>([
-    { id: "1", symbol: "AAPL", name: "Apple Inc.", shares: 10 },
-    { id: "2", symbol: "GOOGL", name: "Alphabet Inc.", shares: 5 },
+    // { id: "1", symbol: "AAPL", name: "Apple Inc.", shares: 10 },
+    // { id: "2", symbol: "GOOGL", name: "Alphabet Inc.", shares: 5 },
   ]);
 
   const addStock = (stock: Omit<Stock, "id">) => {

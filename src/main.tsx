@@ -9,6 +9,8 @@ import Chatbot from "./routes/Chatbot.tsx";
 import Index from "./routes/Index.tsx";
 import App from "./App.tsx";
 import StockSearch from "./routes/StockSearch.tsx";
+import LoginPage from "./routes/LoginPage.tsx";
+import SignUpPage from "./routes/SignUpPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,16 @@ const router = createBrowserRouter([
       { path: "search", element: <StockSearch /> },
       { path: "askAI", element: <Chatbot /> },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+    children: [],
+  },
+  {
+    path: "/signup",
+    element: <SignUpPage />,
+    children: [],
   },
 ]);
 

@@ -2,18 +2,23 @@ import { useStock } from "../context/StockContext";
 
 function PortfolioSummary() {
   const { stocks, stockData } = useStock();
-  const isLoading =
-    stocks.length === 0 || stocks.some((stock) => !stockData[stock.symbol]);
-
+  const isLoading = stocks.some((stock) => !stockData[stock.symbol]);
+  const noStocks = stocks.length === 0;
   if (isLoading) {
     return (
       <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 max-w-3/4 mx-auto">
         <h2 className="text-2xl font-semibold mb-6 text-slate-200">
           Portfolio Summary
         </h2>
-        <div className="text-center text-slate-400 py-10">
-          Loading portfolio data...
-        </div>
+        {noStocks ? (
+          <div className="text-center text-slate-400 py-10">
+            No stocks in portfolio.
+          </div>
+        ) : (
+          <div className="text-center text-slate-400 py-10">
+            Loading portfolio data...
+          </div>
+        )}
       </div>
     );
   }
