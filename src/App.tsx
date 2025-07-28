@@ -18,7 +18,7 @@ function App() {
             <button
               onClick={() => {
                 logout();
-                navigate("/login");
+                navigate("/");
               }}
               className="bg-slate-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-slate-700 transition"
             >
@@ -33,11 +33,3 @@ function App() {
 }
 
 export default App;
-
-// {/* Sign Out Button */}
-// <button
-//   onClick={logout}
-//   className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-l"
-// >
-//   Sign Out
-// </button>

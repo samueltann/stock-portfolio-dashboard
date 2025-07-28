@@ -30,11 +30,11 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            to="/search"
+            to="/news"
             className="block py-2 px-4 hover:text-gray-200 text-xl
                                    md:inline-block"
           >
-            Search
+            News
           </Link>
           <Link
             to="/askAI"
