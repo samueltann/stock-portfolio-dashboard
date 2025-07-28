@@ -30,7 +30,7 @@ export interface Stock {
 
 interface StockContextType {
   stocks: Stock[];
-  addStock: (stock: Omit<Stock, "id">) => void;
+  addStock: (stock: Stock) => void;
   removeStock: (id: string) => void;
   updateStock: (id: string, updatedStock: Partial<Stock>) => void;
   stockData: { [symbol: string]: LiveStockData };
@@ -64,7 +64,7 @@ export function StockProvider({ children }: { children: ReactNode }) {
 
     const unsubscribe = onSnapshot(portfolioRef, (snapshot) => {
       const stockList: Stock[] = snapshot.docs.map((doc) => {
-        const data = doc.data().data;
+        const data = doc.data();
         return {
           id: doc.id,
           symbol: data.symbol,
@@ -79,7 +79,7 @@ export function StockProvider({ children }: { children: ReactNode }) {
   }, [user, db]);
 
   // Firestore operations
-  const addStock = async (stock: Omit<Stock, "id">) => {
+  const addStock = async (stock: Stock) => {
     if (!user) return;
     const stockRef = doc(db, "users", user.uid, "portfolio", stock.symbol);
     await setDoc(stockRef, {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import { useStock } from "../context/StockContext";
 
 const AddStockForm = () => {
@@ -10,11 +11,16 @@ const AddStockForm = () => {
     shares: "",
   });
 
+  const [isValidSymbol, setIsValidSymbol] = useState<boolean | null>(null);
+  const [validating, setValidating] = useState(false);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.symbol || !formData.name || !formData.shares) return;
+    if (!isValidSymbol) return;
 
     await addStock({
+      id: formData.symbol.toUpperCase(),
       symbol: formData.symbol.toUpperCase(),
       name: formData.name,
       shares: parseInt(formData.shares),
@@ -22,13 +28,70 @@ const AddStockForm = () => {
 
     setFormData({ symbol: "", name: "", shares: "" });
     setIsOpen(false);
+    setIsValidSymbol(null);
+    setSuggestions([]);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "symbol") {
+      setIsValidSymbol(null);
+      if (value.length >= 1) {
+        fetchSuggestions(value);
+      } else {
+        setSuggestions([]);
+      }
+    }
+  };
+
+  const fetchSuggestions = async (query: string) => {
+    setValidating(true);
+    try {
+      const response = await axios.get(
+        "https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete",
+        {
+          params: { region: "US", q: query },
+          headers: {
+            "x-rapidapi-key": import.meta.env.VITE_RAPIDAPI_KEY!,
+            "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+          },
+        }
+      );
+
+      const quotes = response.data.quotes || [];
+      setSuggestions(quotes);
+
+      const exactMatch = quotes.find(
+        (q: any) => q.symbol.toUpperCase() === query.toUpperCase()
+      );
+
+      if (exactMatch) {
+        setFormData((prev) => ({
+          ...prev,
+          name: exactMatch.shortname || exactMatch.longname || "",
+        }));
+        setIsValidSymbol(true);
+      } else {
+        setIsValidSymbol(false);
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      setIsValidSymbol(false);
+    } finally {
+      setValidating(false);
+    }
+  };
+
+  const handleSuggestionClick = (symbol: string, name: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      symbol,
+      name,
+    }));
+    setSuggestions([]);
+    setIsValidSymbol(true);
   };
 
   return (
@@ -44,13 +107,11 @@ const AddStockForm = () => {
 
       {isOpen && (
         <>
-          {/* Blur Overlay */}
           <div
             className="fixed inset-0 backdrop-blur-sm z-40"
             onClick={() => setIsOpen(false)}
           ></div>
 
-          {/* Floating Form Card */}
           <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-slate-800 rounded-xl p-6 border border-slate-700 w-full max-w-md z-50 shadow-xl">
             <button
               onClick={() => setIsOpen(false)}
@@ -63,24 +124,53 @@ const AddStockForm = () => {
               Add New Stock
             </h3>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 relative">
               <input
                 type="text"
                 name="symbol"
                 value={formData.symbol}
                 onChange={handleInputChange}
-                placeholder="Stock Symbol (e.g., AAPL)"
+                placeholder="Stock Symbol (e.g., TSLA)"
                 className="w-full bg-slate-700 text-white p-3 rounded-lg"
                 required
               />
+
+              {suggestions.length > 0 && (
+                <div className="absolute bg-slate-700 text-white rounded-lg shadow-lg z-50 mt-1 w-full max-h-48 overflow-auto">
+                  {suggestions.map((s, idx) => (
+                    <div
+                      key={idx}
+                      className="px-4 py-2 hover:bg-slate-600 cursor-pointer"
+                      onClick={() =>
+                        handleSuggestionClick(
+                          s.symbol,
+                          s.shortname || s.longname
+                        )
+                      }
+                    >
+                      {s.symbol} - {s.shortname || s.longname}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {validating && (
+                <p className="text-slate-400 text-sm">Validating symbol...</p>
+              )}
+              {isValidSymbol === false && !validating && (
+                <p className="text-red-400 text-sm">Invalid stock symbol</p>
+              )}
+              {isValidSymbol === true && !validating && (
+                <p className="text-emerald-400 text-sm">Valid symbol</p>
+              )}
+
               <input
                 type="text"
                 name="name"
                 value={formData.name}
-                onChange={handleInputChange}
                 placeholder="Company Name"
                 className="w-full bg-slate-700 text-white p-3 rounded-lg"
-                required
+                readOnly
               />
               <input
                 type="number"
@@ -96,7 +186,12 @@ const AddStockForm = () => {
               <div className="flex space-x-4 pt-4">
                 <button
                   type="submit"
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium"
+                  className={`${
+                    isValidSymbol
+                      ? "bg-emerald-600 hover:bg-emerald-700"
+                      : "bg-gray-600 cursor-not-allowed"
+                  } text-white px-6 py-2 rounded-lg font-medium`}
+                  disabled={!isValidSymbol || validating}
                 >
                   Add Stock
                 </button>
