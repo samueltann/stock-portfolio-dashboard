@@ -5,7 +5,7 @@ import axios from "axios";
 interface NewsDetail {
   title: string;
   link: string;
-  summary?: string;
+  summary: string;
   publisher: string;
 }
 
@@ -75,19 +75,17 @@ const NewsDetailsPage = () => {
         {newsDetail.title}
       </h1>
       <p className="text-slate-500 mb-4">{newsDetail.publisher}</p>
-
-      {newsDetail.summary && (
-        <p className="text-slate-700 mb-6">{newsDetail.summary}</p>
-      )}
-
-      <a
-        href={newsDetail.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-emerald-600 hover:underline"
-      >
-        Read Original Article →
-      </a>
+      <p className="text-slate-700 mb-6">{newsDetail.summary}</p>
+      <div className="flex justify-end mt-10">
+        <a
+          href={newsDetail.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-emerald-600 hover:underline"
+        >
+          Read Original Article →
+        </a>
+      </div>
     </div>
   );
 };
