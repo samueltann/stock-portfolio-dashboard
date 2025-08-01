@@ -51,8 +51,8 @@ A **React + Firebase** web application that allows users to manage their stock p
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/stock-dashboard.git
-cd stock-dashboard
+git clone https://github.com/your-username/stock-portfolio-dashboard.git
+cd stock-portfolio-dashboard
 ```
 
 ### 2. Install dependencies
