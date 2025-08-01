@@ -1,55 +1,83 @@
-# React + TypeScript + Vite
+# 📊 Stock Portfolio Dashboard with News & AI Assistant
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A **React + Firebase** web application that allows users to manage their stock portfolio, read the latest stock-related news, and interact with an AI assistant powered by **Google Gemini API**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+### 🔐 User Authentication
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Sign Up / Login with Firebase Authentication.
+- Persistent user sessions.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 📈 Portfolio Management
+
+- Add, update, and remove stocks from your portfolio.
+- Real-time synchronization with Firestore Database.
+- Displays live stock prices via custom hooks.
+
+### 📰 News Feed
+
+- Fetches latest financial news from **Yahoo Finance API (RapidAPI)**.
+- Personalized news based on stocks in user's portfolio.
+- Click on a news item to view detailed content.
+- “Load More” button to paginate through more articles.
+
+### 🤖 Ask AI (Gemini Assistant)
+
+- Integrated with **Google Gemini API**.
+- Users can ask questions related to stocks or finance.
+- AI responses are formatted for readability.
+
+---
+
+## 🛠️ Tech Stack
+
+- **React** (with Hooks & Context API)
+- **React Router v6**
+- **Tailwind CSS** for UI styling
+- **Firebase Auth & Firestore**
+- **RapidAPI (Yahoo Finance News API)**
+- **Google Gemini API** for AI Assistant
+- **Axios** for API calls
+
+---
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/stock-dashboard.git
+cd stock-dashboard
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
-# stock-portfolio-dashboard
+
+### 3. Environment variables
+
+- Create a .env file in the root directory and add the following:
+
+```bash
+VITE_FIREBASE_API_KEY=your-firebase-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
+VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-firebase-sender-id
+VITE_FIREBASE_APP_ID=your-firebase-app-id
+VITE_RAPIDAPI_KEY=your-rapidapi-key
+VITE_GEMINI_API_KEY=your-gemini-api-key
+```
+
+### 4. Run the development server
+
+```bash
+npm run dev
+```
