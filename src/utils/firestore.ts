@@ -1,5 +1,5 @@
 // utils/firestore.ts
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
 export async function getPortfolio(userId: string) {
